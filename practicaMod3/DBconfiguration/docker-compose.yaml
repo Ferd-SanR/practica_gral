@@ -1,0 +1,22 @@
+services:
+  postgres:
+    build: .                        # Usa el Dockerfile en esta carpeta
+    container_name: ContDBpractMod3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: Admin
+      POSTGRES_PASSWORD: p4ssw0rdDB
+      POSTGRES_DB: credenciales
+    volumes:
+      # Volumen persistente para la base de datos
+      - postgres_data:/var/lib/postgresql/data
+      
+      # Scripts de inicialización (se ejecutan automáticamente si el volumen está vacío)
+      - ./init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./save_data.sql:/docker-entrypoint-initdb.d/02_save_data.sql
+
+volumes:
+  postgres_data:
+    driver: local
+
